@@ -1,2 +1,4 @@
 [*.{kt,kts}]
 max_line_length = 75
+# noinspection EditorConfigKeyCorrectness
+disabled_rules=filename
