@@ -1,24 +1,23 @@
 package chapter3.exercises.ex14
 
 import chapter3.List
+import chapter3.exercises.ex13.appendL
+import chapter3.foldLeft
+import chapter3.foldRight
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
 // tag::init[]
 fun <A> concat(lla: List<List<A>>): List<A> =
-
-    SOLUTION_HERE()
+    foldLeft(lla, List.empty()) { acc, x -> appendL(acc, x) }
 
 fun <A> concat2(lla: List<List<A>>): List<A> =
-
-    SOLUTION_HERE()
+    foldRight(lla, List.empty()) { x, acc -> appendL(x, acc) }
 // end::init[]
 
-//TODO: Enable tests by removing `!` prefix
 class Exercise14 : WordSpec({
     "list concat" should {
-        "!concatenate a list of lists into a single list" {
+        "concatenate a list of lists into a single list" {
             concat(
                 List.of(
                     List.of(1, 2, 3),
