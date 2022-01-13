@@ -1,14 +1,12 @@
 package chapter6.exercises.ex6
 
-// import chapter6.RNG
+import chapter6.RNG
 import chapter6.Rand
 import chapter6.rng1
 import chapter6.unit
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
-//TODO: Enable tests by removing `!` prefix
 class Exercise6 : WordSpec({
 
     //tag::init[]
@@ -16,13 +14,16 @@ class Exercise6 : WordSpec({
         ra: Rand<A>,
         rb: Rand<B>,
         f: (A, B) -> C
-    ): Rand<C> =
+    ): Rand<C> = {
+        val (a, aRng) = ra(it)
+        val (b, bRng) = rb(aRng)
+        f(a, b) to bRng
+    }
 
-        SOLUTION_HERE()
     //end::init[]
 
     "map2" should {
-        "!combine the results of two actions" {
+        "combine the results of two actions" {
 
             val combined: Rand<String> =
                 map2(

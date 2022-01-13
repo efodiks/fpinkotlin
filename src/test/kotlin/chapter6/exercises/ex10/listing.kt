@@ -1,62 +1,68 @@
 package chapter6.exercises.ex10
 
-// import chapter3.Cons
+import chapter3.Cons
 import chapter3.List
-// import chapter3.solutions.foldRight
+import chapter3.Nil
+import chapter3.foldRight
 import chapter6.RNG
 import chapter6.rng1
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
-//tag::init[]
+// tag::init[]
 data class State<S, out A>(val run: (S) -> Pair<A, S>) {
 
     companion object {
         fun <S, A> unit(a: A): State<S, A> =
-
-            SOLUTION_HERE()
+            State { state -> a to state }
 
         fun <S, A, B, C> map2(
             ra: State<S, A>,
             rb: State<S, B>,
             f: (A, B) -> C
         ): State<S, C> =
-
-            SOLUTION_HERE()
+            State { state ->
+                val (a, aState) = ra.run(state)
+                val (b, bState) = rb.run(aState)
+                f(a, b) to bState
+            }
 
         fun <S, A> sequence(fs: List<State<S, A>>):
             State<S, List<A>> =
-
-            SOLUTION_HERE()
+            foldRight(fs, unit(Nil)) { x, acc ->
+                map2(x, acc) { a, al -> Cons(a, al) }
+            }
     }
 
     fun <B> map(f: (A) -> B): State<S, B> =
-
-        SOLUTION_HERE()
+        State {
+            val (a, newState) = run(it)
+            f(a) to newState
+        }
 
     fun <B> flatMap(f: (A) -> State<S, B>): State<S, B> =
-
-        SOLUTION_HERE()
+        State {
+            val (a, newState) = run(it)
+            f(a).run(newState)
+        }
 }
-//end::init[]
+// end::init[]
 
-//TODO: Enable tests by removing `!` prefix
 class Exercise10 : WordSpec({
     "unit" should {
-        "!compose a new state of pure a" {
+        "compose a new state of pure a" {
             State.unit<RNG, Int>(1).run(rng1) shouldBe (1 to rng1)
         }
     }
     "map" should {
-        "!transform a state" {
+        "transform a state" {
             State.unit<RNG, Int>(1)
                 .map { it.toString() }
                 .run(rng1) shouldBe ("1" to rng1)
         }
     }
     "flatMap" should {
-        "!transform a state" {
+        "transform a state" {
             State.unit<RNG, Int>(1)
                 .flatMap { i ->
                     State.unit<RNG, String>(i.toString())
@@ -64,7 +70,7 @@ class Exercise10 : WordSpec({
         }
     }
     "map2" should {
-        "!combine the results of two actions" {
+        "combine the results of two actions" {
 
             val combined: State<RNG, String> =
                 State.map2(
@@ -78,7 +84,7 @@ class Exercise10 : WordSpec({
         }
     }
     "sequence" should {
-        "!combine the results of many actions" {
+        "combine the results of many actions" {
 
             val combined: State<RNG, List<Int>> =
                 State.sequence(
