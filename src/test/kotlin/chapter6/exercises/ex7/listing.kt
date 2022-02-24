@@ -11,7 +11,6 @@ import chapter6.solutions.ex6.map2
 import chapter6.unit
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
 class Exercise7 : WordSpec({
 
@@ -40,10 +39,13 @@ class Exercise7 : WordSpec({
             return if (count <= 0) {
                 acc
             } else {
-                go(count - 1, Cons(
-                    { it.nextInt() },
-                    acc
-                ))
+                go(
+                    count - 1,
+                    Cons(
+                        { it.nextInt() },
+                        acc
+                    )
+                )
             }
         }
         return sequence2(go(count, Nil))(rng)

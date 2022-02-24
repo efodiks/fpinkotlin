@@ -6,17 +6,16 @@ import chapter6.solutions.ex1.nonNegativeInt
 import chapter6.unit
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
 class Exercise8 : WordSpec({
 
-    //tag::init[]
+    // tag::init[]
     fun <A, B> flatMap(f: Rand<A>, g: (A) -> Rand<B>): Rand<B> =
         {
             val (a, aRng) = f(it)
             g(a)(aRng)
         }
-    //end::init[]
+    // end::init[]
 
     fun nonNegativeIntLessThan(n: Int): Rand<Int> =
         flatMap(::nonNegativeInt) { i: Int ->
@@ -32,7 +31,8 @@ class Exercise8 : WordSpec({
             val result =
                 flatMap(
                     unit(1),
-                    { i -> unit(i.toString()) })(rng1)
+                    { i -> unit(i.toString()) }
+                )(rng1)
 
             result.first shouldBe "1"
             result.second shouldBe rng1

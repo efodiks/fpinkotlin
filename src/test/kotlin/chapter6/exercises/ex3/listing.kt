@@ -2,14 +2,12 @@ package chapter6.exercises.ex3
 
 import chapter6.RNG
 import chapter6.solutions.ex2.double
-import chapter6.solutions.ex5.doubleR
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
 class Exercise3 : WordSpec({
 
-    //tag::init[]
+    // tag::init[]
     fun intDouble(rng: RNG): Pair<Pair<Int, Double>, RNG> {
         val (nextInt, nextRng) = rng.nextInt()
         val (nextDouble, nextNextRng) = double(nextRng)
@@ -27,7 +25,7 @@ class Exercise3 : WordSpec({
         val (d3, rng3) = double(rng2)
         return Triple(d1, d2, d3) to rng3
     }
-    //end::init[]
+    // end::init[]
 
     "intDouble" should {
 
