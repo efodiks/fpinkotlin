@@ -1,15 +1,15 @@
 package chapter3.exercises.ex1
 
+import chapter3.Cons
 import chapter3.List
 import chapter3.Nil
-import chapter3.Cons
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
 import io.kotlintest.specs.WordSpec
 
 // tag::init[]
 fun <A> tail(xs: List<A>): List<A> =
-    when(xs) {
+    when (xs) {
         is Cons -> xs.tail
         is Nil -> throw IllegalStateException()
     }

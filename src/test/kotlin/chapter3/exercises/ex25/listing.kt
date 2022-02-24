@@ -5,12 +5,11 @@ import chapter3.Leaf
 import chapter3.Tree
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 import kotlin.math.max
 
 // tag::init[]
 fun maximum(tree: Tree<Int>): Int =
-    when(tree) {
+    when (tree) {
         is Branch -> max(maximum(tree.left), maximum(tree.right))
         is Leaf -> tree.value
     }

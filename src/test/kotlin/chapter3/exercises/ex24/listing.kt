@@ -5,11 +5,10 @@ import chapter3.Leaf
 import chapter3.Tree
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
 // tag::init[]
 fun <A> size(tree: Tree<A>): Int =
-    when(tree) {
+    when (tree) {
         is Leaf -> 1
         is Branch -> 1 + size(tree.left) + size(tree.right)
     }

@@ -5,7 +5,6 @@ import chapter3.Leaf
 import chapter3.Tree
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 import kotlin.math.max
 
 // tag::init[]

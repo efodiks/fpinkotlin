@@ -3,11 +3,8 @@ package chapter3.exercises.ex23
 import chapter3.Cons
 import chapter3.List
 import chapter3.Nil
-import chapter3.foldLeft
-import chapter3.solutions.sol28.fold
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.WordSpec
-import utils.SOLUTION_HERE
 
 // tag::startsWith[]
 tailrec fun <A> startsWith(l1: List<A>, l2: List<A>): Boolean =
@@ -24,7 +21,7 @@ tailrec fun <A> startsWith(l1: List<A>, l2: List<A>): Boolean =
 
 // tag::init[]
 tailrec fun <A> hasSubsequence(xs: List<A>, sub: List<A>): Boolean =
-    when(xs) {
+    when (xs) {
         is Nil -> false
         is Cons -> when {
             startsWith(xs, sub) -> true

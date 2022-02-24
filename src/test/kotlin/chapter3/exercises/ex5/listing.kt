@@ -1,8 +1,8 @@
 package chapter3.exercises.ex5
 
+import chapter3.Cons
 import chapter3.List
 import chapter3.Nil
-import chapter3.Cons
 import chapter3.reverse
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldThrow
@@ -10,7 +10,7 @@ import io.kotlintest.specs.WordSpec
 
 // tag::init[]
 fun <A> init(l: List<A>): List<A> {
-    fun go (acc: List<A>, ll: List<A>): List<A> {
+    fun go(acc: List<A>, ll: List<A>): List<A> {
         return when {
             ll is Nil -> throw IllegalStateException()
             (ll as Cons).tail is Nil -> reverse(acc)
