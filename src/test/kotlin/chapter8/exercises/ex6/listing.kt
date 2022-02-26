@@ -2,19 +2,29 @@ package chapter8.exercises.ex6
 
 import chapter8.RNG
 import chapter8.State
-import utils.SOLUTION_HERE
 
-//tag::init[]
+// tag::init[]
 data class Gen<A>(val sample: State<RNG, A>) {
 
     companion object {
-        fun <A> listOfN(gn: Gen<Int>, ga: Gen<A>): Gen<List<A>> =
+        fun <A> sequence(ls: List<Gen<A>>): Gen<List<A>> =
+            Gen(State.sequence(ls.map { it.sample }))
 
-            SOLUTION_HERE()
+        fun <A> listOfN(gn: Gen<Int>, ga: Gen<A>): Gen<List<A>> =
+            gn.flatMap { n ->
+                sequence(List(n) { ga })
+            }
     }
 
-    fun <B> flatMap(f: (A) -> Gen<B>): Gen<B> =
+/*    fun <B> flatMap(f: (A) -> Gen<B>): Gen<B> = Gen(
+        State { rng ->
+            val (bGen, rng2) = sample.map(f).run(rng)
+            bGen.sample.run(rng2)
+        }
+    )*/
 
-        SOLUTION_HERE()
+    fun <B> flatMap(f: (A) -> Gen<B>): Gen<B> = Gen(
+        sample.flatMap { f(it).sample }
+    )
 }
-//end::init[]
+// end::init[]

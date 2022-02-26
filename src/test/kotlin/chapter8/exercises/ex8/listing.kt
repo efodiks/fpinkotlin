@@ -2,19 +2,27 @@ package chapter8.exercises.ex8
 
 import chapter8.RNG
 import chapter8.State
-import utils.SOLUTION_HERE
+import chapter8.double
 
 data class Gen<A>(val sample: State<RNG, A>) {
     companion object {
 
-        //tag::init[]
+        // tag::init[]
         fun <A> weighted(
             pga: Pair<Gen<A>, Double>,
             pgb: Pair<Gen<A>, Double>
         ): Gen<A> =
-
-            SOLUTION_HERE()
-        //end::init[]
+            Gen<Double>(
+                State {
+                    double(it)
+                }
+            ).flatMap {
+                val sum = pga.second + pgb.second
+                if (pga.second / sum < it) {
+                    pga.first
+                } else pgb.first
+            }
+        // end::init[]
     }
 
     fun <B> flatMap(f: (A) -> Gen<B>): Gen<B> =

@@ -17,15 +17,12 @@ data class Gen<A>(val sample: State<RNG, A>) {
 data class SGen<A>(val forSize: (Int) -> Gen<A>) {
 
     operator fun invoke(i: Int): Gen<A> =
-
-        SOLUTION_HERE()
+        forSize(i)
 
     fun <B> map(f: (A) -> B): SGen<B> =
-
-        SOLUTION_HERE()
+        SGen { forSize(it).map(f) }
 
     fun <B> flatMap(f: (A) -> Gen<B>): SGen<B> =
-
-        SOLUTION_HERE()
+        SGen { forSize(it).flatMap(f) }
 }
 //end::init[]
