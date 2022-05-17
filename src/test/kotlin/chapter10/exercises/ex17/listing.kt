@@ -12,15 +12,18 @@ import utils.SOLUTION_HERE
 fun <A, B> productMonoid(
     ma: Monoid<A>,
     mb: Monoid<B>
-): Monoid<Pair<A, B>> =
+): Monoid<Pair<A, B>> = object : Monoid<Pair<A, B>> {
+    override fun combine(a1: Pair<A, B>, a2: Pair<A, B>): Pair<A, B> {
+        return ma.combine(a1.first, a2.first) to mb.combine(a1.second, a2.second)
+    }
 
-    SOLUTION_HERE()
+    override val nil: Pair<A, B> = ma.nil to mb.nil
+}
 //end::init1[]
 
-//TODO: Enable tests by removing `!` prefix
 class Exercise17 : WordSpec({
     "productMonoid" should {
-        "!comply with the law of associativity" {
+        "comply with the law of associativity" {
             assertAll<Pair<Int, String>> { p ->
                 val product =
                     productMonoid(intAdditionMonoid, stringMonoid)

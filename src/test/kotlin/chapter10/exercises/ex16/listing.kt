@@ -5,6 +5,7 @@ import chapter10.List
 import chapter10.Monoid
 import chapter10.dual
 import chapter10.endoMonoid
+import chapter10.listMonoid
 import utils.SOLUTION_HERE
 
 interface Foldable<F> {
@@ -20,7 +21,6 @@ interface Foldable<F> {
 
     //tag::init1[]
     fun <A> toList(fa: Kind<F, A>): List<A> =
-
-        SOLUTION_HERE()
+        foldMap(fa, listMonoid()) { List.of(it) }
     //end::init1[]
 }

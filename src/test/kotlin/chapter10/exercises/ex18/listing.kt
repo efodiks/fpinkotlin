@@ -9,15 +9,21 @@ import utils.SOLUTION_HERE
 
 //tag::init1[]
 fun <A, B> functionMonoid(b: Monoid<B>): Monoid<(A) -> B> =
+    object : Monoid<(A) -> B> {
+        override fun combine(a1: (A) -> B, a2: (A) -> B): (A) -> B {
+            return { a ->
+                b.combine(a1(a), a2(a))
+            }
+        }
 
-    SOLUTION_HERE()
+        override val nil: (A) -> B = { b.nil }
+    }
 //end::init1[]
 
-//TODO: Enable tests by removing `!` prefix
 class Exercise18 : WordSpec({
 
     "functionMonoid" should {
-        "!combine the results of two functions using another monoid" {
+        "combine the results of two functions using another monoid" {
             assertAll<Int> { i ->
 
                 val fm = functionMonoid<Int, String>(stringMonoid)
