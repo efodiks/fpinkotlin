@@ -16,8 +16,12 @@ abstract class Listing : ParserDsl<ParseError>() {
     init {
         //tag::init1[]
         fun <A> listOfN(n: Int, pa: Parser<A>): Parser<List<A>> =
-
-            SOLUTION_HERE()
+            when(n) {
+                0 -> succeed(emptyList())
+                else -> map2(pa, listOfN(n - 1, pa)) {a, acc ->
+                    acc + listOf(a)
+                }
+            }
         //end::init1[]
     }
 }

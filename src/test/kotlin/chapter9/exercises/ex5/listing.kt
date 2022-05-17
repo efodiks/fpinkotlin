@@ -12,10 +12,12 @@ infix fun <A> Parser<out A>.or(p: Parser<out A>): Parser<A> = TODO()
 
 fun <A> succeed(a: A): Parser<A> = TODO()
 
-//TODO: implement `defer` here
+fun <A> defer(a: Parser<A>): Parser<() -> A> =
+    map2(a, succeed(Unit)) { a2, _ -> { a2 } }
 
-//TODO: change this method to use `defer`
-fun <A> many(pa: Parser<A>): Parser<List<A>> =
+
+/*//TODO: change this method to use `defer`
+fun <A> many(pa: Parser<A>): Parser<() -> List<A>> =
     map2(pa, many(pa)) { a, la ->
         listOf(a) + la
-    } or succeed(emptyList())
+    } or succeed({ emptyList() })*/
