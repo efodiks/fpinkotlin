@@ -25,15 +25,16 @@ fun main() {
 
     //tag::init[]
     fun replicateIntState(): StateOf<Int, List<Int>> =
-
-        SOLUTION_HERE()
+        intMonad.replicateM(10, stateA)
 
     fun map2IntState(): StateOf<Int, Int> =
-
-        SOLUTION_HERE()
+        intMonad.map2(stateA, stateB) { a, b -> a * b }
 
     fun sequenceIntState(): StateOf<Int, List<Int>> =
-
-        SOLUTION_HERE()
+        intMonad.sequence(List.of(stateA, stateB))
     //end::init[]
+
+    println(replicateIntState().fix().run(5))
+    println(map2IntState().fix().run(5))
+    println(sequenceIntState().fix().run(5))
 }

@@ -27,8 +27,7 @@ interface Monad<F> : Functor<F> {
 
     //tag::init1[]
     fun <A> replicateM(n: Int, ma: Kind<F, A>): Kind<F, List<A>> =
-
-        SOLUTION_HERE()
+        sequence(List.fill(n, ma))
     //end::init1[]
 
     //tag::init2[]

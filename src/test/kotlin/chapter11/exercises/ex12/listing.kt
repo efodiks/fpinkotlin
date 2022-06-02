@@ -16,8 +16,7 @@ interface Monad<F> : Functor<F> {
 
     //tag::init1[]
     fun <A, B> flatMap(fa: Kind<F, A>, f: (A) -> Kind<F, B>): Kind<F, B> =
-
-        SOLUTION_HERE()
+        join(map(fa, f))
     //end::init1[]
 
     //tag::init2[]
@@ -25,7 +24,6 @@ interface Monad<F> : Functor<F> {
         f: (A) -> Kind<F, B>,
         g: (B) -> Kind<F, C>
     ): (A) -> Kind<F, C> =
-
-        SOLUTION_HERE()
+        { a: A -> join(map(f(a), g)) }
     //end::init2[]
 }

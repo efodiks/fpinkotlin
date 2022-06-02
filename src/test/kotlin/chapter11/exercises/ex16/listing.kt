@@ -13,17 +13,14 @@ interface Monad<F> : Functor<F> {
 data class Id<out A>(val a: A) : IdOf<A> {
     companion object {
         fun <A> unit(a: A): Id<A> =
-
-            SOLUTION_HERE()
+            Id(a)
     }
 
     fun <B> flatMap(f: (A) -> Id<B>): Id<B> =
-
-        SOLUTION_HERE()
+        f(a)
 
     fun <B> map(f: (A) -> B): Id<B> =
-
-        SOLUTION_HERE()
+        unit(f(a))
 }
 //end::init1[]
 
@@ -36,9 +33,19 @@ typealias IdOf<A> = Kind<ForId, A>
 fun <A> IdOf<A>.fix() = this as Id<A>
 
 //tag::init2[]
-fun idMonad(): Monad<ForId> =
+fun idMonad(): Monad<ForId> = object : Monad<ForId> {
+    override fun <A, B> map(
+        fa: Kind<ForId, A>,
+        f: (A) -> B
+    ): Kind<ForId, B> = fa.fix().map(f)
 
-    SOLUTION_HERE()
+    override fun <A> unit(a: A): Kind<ForId, A> = Id.unit(a)
+
+    override fun <A, B> flatMap(
+        fa: Kind<ForId, A>,
+        f: (A) -> Kind<ForId, B>
+    ): Kind<ForId, B> = fa.fix().flatMap { a -> f(a).fix() }
+}
 //end::init2[]
 
 fun main() {
