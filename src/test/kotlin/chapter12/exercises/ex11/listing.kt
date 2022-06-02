@@ -1,6 +1,7 @@
 package chapter12.exercises.ex11
 
 import arrow.Kind
+import arrow.core.foldLeft
 import arrow.syntax.function.curried
 import chapter12.Functor
 import utils.SOLUTION_HERE
@@ -30,8 +31,10 @@ interface Applicative<F> : Functor<F> {
     //tag::init1[]
     fun <K, V> sequence(
         mkv: Map<K, Kind<F, V>>
-    ): Kind<F, Map<K, V>> =
-
-        SOLUTION_HERE()
+    ): Kind<F, Map<K, V>> = mkv.asIterable().fold(unit(emptyMap())) { acc, (key, valueK) ->
+        map2(acc, valueK) { map, value ->
+            map + mapOf(key to value)
+        }
+    }
     //end::init1[]
 }

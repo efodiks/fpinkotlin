@@ -91,8 +91,9 @@ interface Traversable<F> : Functor<F>, Foldable<F> {
 
     //tag::init[]
     fun <A> reverse(ta: Kind<F, A>): Kind<F, A> =
-
-        SOLUTION_HERE()
+        mapAccum(ta, toList(ta).reversed()) { a: A, aList: List<A> ->
+            aList.first() to aList.drop(1)
+        }.first
     //end::init[]
 }
 

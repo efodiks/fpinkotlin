@@ -2,6 +2,9 @@ package chapter12.exercises.ex13
 
 import arrow.Kind
 import arrow.core.ForId
+import arrow.core.extensions.IdApplicative
+import arrow.core.fix
+import chapter11.exercises.ex16.Id
 import chapter12.Applicative
 import chapter12.Functor
 import utils.SOLUTION_HERE
@@ -29,7 +32,18 @@ interface Traversable<F> : Functor<F> {
         fa: Kind<F, A>,
         f: (A) -> B
     ): Kind<F, B> =
-
-        SOLUTION_HERE()
+        traverse(
+            fa,
+            object : Applicative<ForId> {
+                override fun <A> unit(a: A): Kind<ForId, A> = arrow.core.Id.just(a)
+                override fun <A, B, C> map2(
+                    fa: Kind<ForId, A>,
+                    fb: Kind<ForId, B>,
+                    f: (A, B) -> C
+                ): Kind<ForId, C> {
+                    return fa.fix().flatMap { a -> fb.fix().map { b -> f(a, b) } }
+                }
+            }
+        ) { a: A -> arrow.core.Id.just(f(a)) }.fix().extract()
 }
 //end::init1[]

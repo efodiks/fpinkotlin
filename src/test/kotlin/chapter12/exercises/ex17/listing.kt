@@ -52,7 +52,8 @@ interface Traversable<F> : Functor<F>, Foldable<F> {
         f: (A) -> Kind<G, B>,
         g: (A) -> Kind<H, B>
     ): Pair<Kind<G, Kind<F, B>>, Kind<H, Kind<F, B>>> =
-
-        SOLUTION_HERE()
+        traverse(ta, AG product AH) { a ->
+            Product(f(a) to g(a))
+        }.fix().value
     //end::init[]
 }

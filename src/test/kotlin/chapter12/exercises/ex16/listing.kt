@@ -41,7 +41,8 @@ interface Traversable<F> : Functor<F>, Foldable<F> {
 
     //tag::init[]
     fun <A, B> foldLeft(fa: Kind<F, A>, z: B, f: (B, A) -> B): B =
-
-        SOLUTION_HERE()
+        mapAccum(fa, z) { a: A, b: B ->
+            Unit to f(b, a)
+        }.second
     //end::init[]
 }

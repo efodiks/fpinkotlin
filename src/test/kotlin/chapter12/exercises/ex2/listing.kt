@@ -11,8 +11,9 @@ interface Applicative<F> : Functor<F> {
         fab: Kind<F, (A) -> B>,
         fa: Kind<F, A>
     ): Kind<F, B> =
-
-        SOLUTION_HERE("Define in terms of map2 and unit")
+        map2(fab, fa) { ab: (A) -> B, a: A ->
+            ab(a)
+        }
 
     fun <A> unit(a: A): Kind<F, A>
 
@@ -20,15 +21,15 @@ interface Applicative<F> : Functor<F> {
         fa: Kind<F, A>,
         f: (A) -> B
     ): Kind<F, B> =
-
-        SOLUTION_HERE("Define in terms of apply and unit")
+        apply(unit(f), fa)
 
     fun <A, B, C> map2(
         fa: Kind<F, A>,
         fb: Kind<F, B>,
         f: (A, B) -> C
-    ): Kind<F, C> =
-
-        SOLUTION_HERE("Define in terms of apply and unit")
+    ): Kind<F, C> {
+        val curried = { a: A -> { b: B -> f(a, b) } }
+        return apply(apply(unit(curried), fa), fb)
+    }
 }
 //end::init1[]

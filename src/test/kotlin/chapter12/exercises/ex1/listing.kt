@@ -44,26 +44,26 @@ interface Applicative<F> : Functor<F> {
 
     //tag::init1[]
     fun <A> sequence(lfa: List<Kind<F, A>>): Kind<F, List<A>> =
-
-        SOLUTION_HERE()
+        traverse(lfa) { x -> x }
 
     fun <A> replicateM(n: Int, ma: Kind<F, A>): Kind<F, List<A>> =
-
-        SOLUTION_HERE()
-
+        when(n) {
+            0 -> unit(List.empty())
+            else -> map2(ma, replicateM(n - 1, ma)) { m, acc ->
+                Cons(m, acc)
+            }
+        }
     fun <A, B> product(
         ma: Kind<F, A>,
         mb: Kind<F, B>
     ): Kind<F, Pair<A, B>> =
-
-        SOLUTION_HERE()
+        map2(ma, mb, ::Pair)
     //end::init1[]
 }
 
-//TODO: Enable tests by removing `!` prefix
 class Exercise1 : WordSpec({
     "product" should {
-        "!return all product permutations of lists" {
+        "return all product permutations of lists" {
             val AF = object : Applicative<ForList> {
                 override fun <A, B, C> map2(
                     fa: ListOf<A>,
@@ -90,7 +90,7 @@ class Exercise1 : WordSpec({
             )
         }
 
-        "!return all product permutations of options" {
+        "return all product permutations of options" {
             val AF = object : Applicative<ForOption> {
                 override fun <A, B, C> map2(
                     fa: Kind<ForOption, A>,
